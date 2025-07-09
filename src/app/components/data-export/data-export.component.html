@@ -1,0 +1,137 @@
+<div class="page-header">
+  <h1>Data Export</h1>
+</div>
+
+<div class="control-bar">
+  <div class="row align-items-center">
+    <div class="col-md-3">
+      <label class="form-label">Date Range</label>
+      <input type="date" class="form-control" [(ngModel)]="startDate">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">&nbsp;</label>
+      <input type="date" class="form-control" [(ngModel)]="endDate">
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">Format</label>
+      <select class="form-select" [(ngModel)]="exportFormat">
+        <option value="csv">CSV</option>
+        <option value="excel">Excel</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <label class="form-label">&nbsp;</label>
+      <button class="btn btn-dark w-100">
+        <i class="bi bi-funnel me-1"></i>Apply Filters
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="section-header">
+  <h2>Export Options</h2>
+</div>
+<div class="export-grid">
+  <div class="export-card">
+    <i class="bi bi-people"></i>
+    <h6>Backoffice Users</h6>
+    <p>Export all backoffice users (Algeos and Printing Portal)</p>
+    <button class="btn btn-dark btn-sm mt-2" (click)="exportBackofficeUsers()">
+      <i class="bi bi-download me-1"></i>Export Users
+    </button>
+  </div>
+  
+  <div class="export-card">
+    <i class="bi bi-file-medical"></i>
+    <h6>Confections</h6>
+    <p>Export all confection data with patient and practitioner details</p>
+    <button class="btn btn-dark btn-sm mt-2" (click)="exportConfections()">
+      <i class="bi bi-download me-1"></i>Export Confections
+    </button>
+  </div>
+  
+  <div class="export-card">
+    <i class="bi bi-building"></i>
+    <h6>Customers</h6>
+    <p>Export all customer data from clinic organizations</p>
+    <button class="btn btn-dark btn-sm mt-2" (click)="exportCustomers()">
+      <i class="bi bi-download me-1"></i>Export Customers
+    </button>
+  </div>
+  
+  <div class="export-card">
+    <i class="bi bi-cart-check"></i>
+    <h6>Orders</h6>
+    <p>Export all order data with detailed information</p>
+    <button class="btn btn-dark btn-sm mt-2" (click)="exportOrders()">
+      <i class="bi bi-download me-1"></i>Export Orders
+    </button>
+  </div>
+  
+  <div class="export-card">
+    <i class="bi bi-currency-pound"></i>
+    <h6>Invoices</h6>
+    <p>Export all invoice and financial data</p>
+    <button class="btn btn-dark btn-sm mt-2" (click)="exportInvoices()">
+      <i class="bi bi-download me-1"></i>Export Invoices
+    </button>
+  </div>
+</div>
+
+<div class="section-header mt-5">
+  <h2>Recent Exports</h2>
+</div>
+<div class="data-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Export Type</th>
+          <th>Date Created</th>
+          <th>Format</th>
+          <th>File Size</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Orders Export</td>
+          <td>2025-01-08 14:30</td>
+          <td>CSV</td>
+          <td>2.4 MB</td>
+          <td><span class="badge bg-success">Completed</span></td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-dark" title="Download">
+              <i class="bi bi-download"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Financial Export</td>
+          <td>2025-01-07 09:15</td>
+          <td>PDF</td>
+          <td>1.8 MB</td>
+          <td><span class="badge bg-success">Completed</span></td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-dark" title="Download">
+              <i class="bi bi-download"></i>
+            </button>
+          </td>
+        </tr>
+        <tr>
+          <td>Practitioners Export</td>
+          <td>2025-01-06 16:45</td>
+          <td>Excel</td>
+          <td>856 KB</td>
+          <td><span class="badge bg-warning">Processing</span></td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-secondary" disabled>
+              <i class="bi bi-hourglass-split"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

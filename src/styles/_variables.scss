@@ -1,0 +1,34 @@
+// Custom Bootstrap variable overrides
+:root {
+  // Color palette - only black, white, and Bootstrap grays
+  --primary-black: #000000;
+  --primary-white: #ffffff;
+  
+  // Spacing system (8px base)
+  --spacing-base: 8px;
+  --spacing-1: calc(var(--spacing-base) * 1);
+  --spacing-2: calc(var(--spacing-base) * 2);
+  --spacing-3: calc(var(--spacing-base) * 3);
+  --spacing-4: calc(var(--spacing-base) * 4);
+  --spacing-5: calc(var(--spacing-base) * 5);
+  --spacing-6: calc(var(--spacing-base) * 6);
+  --spacing-8: calc(var(--spacing-base) * 8);
+  
+  // Border radius
+  --border-radius-base: 8px;
+  
+  // Sidebar
+  --sidebar-width: 6rem; // 96px (increased from 4rem)
+  --sidebar-bg: var(--primary-black);
+  --sidebar-text: var(--primary-white);
+  
+  // Transitions
+  --transition-base: all 0.3s ease;
+}
+
+// Bootstrap variable overrides
+$primary: #000000;
+$secondary: #6c757d;
+$border-radius: 8px;
+$border-radius-sm: 4px;
+$border-radius-lg: 12px;

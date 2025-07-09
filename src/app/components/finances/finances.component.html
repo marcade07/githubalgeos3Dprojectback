@@ -1,0 +1,98 @@
+<div class="page-header">
+  <h1>Finances</h1>
+</div>
+
+<div class="control-bar">
+  <div class="row align-items-center mb-3">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Search invoices..." [(ngModel)]="searchTerm" (ngModelChange)="filterInvoices()">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="clinicFilter" (ngModelChange)="filterInvoices()">
+        <option value="">All Clinics</option>
+        <option *ngFor="let clinic of getUniqueClinics()" [value]="clinic">{{ clinic }}</option>
+      </select>
+    </div>
+    <div class="col-md-5 text-end">
+      <button class="btn btn-outline-dark">
+        <i class="bi bi-download me-1"></i>Export
+      </button>
+    </div>
+  </div>
+  
+  <!-- Date Range Filter Row -->
+  <div class="row align-items-center">
+    <div class="col-md-2">
+      <label class="form-label mb-1">From Date:</label>
+      <input 
+        type="date" 
+        class="form-control" 
+        [value]="getDateInputValue(startDate)"
+        (change)="onStartDateChange($event)"
+        placeholder="DD/MM/YYYY">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label mb-1">To Date:</label>
+      <input 
+        type="date" 
+        class="form-control" 
+        [value]="getDateInputValue(endDate)"
+        (change)="onEndDateChange($event)"
+        placeholder="DD/MM/YYYY">
+    </div>
+    <div class="col-md-2">
+      <label class="form-label mb-1">&nbsp;</label>
+      <button 
+        class="btn btn-outline-secondary w-100" 
+        (click)="clearDateFilters()"
+        title="Clear date filters">
+        <i class="bi bi-x-circle me-1"></i>Clear Dates
+      </button>
+    </div>
+    <div class="col-md-6">
+      <!-- Display selected date range in DD/MM/YYYY format -->
+      <div class="mt-2" *ngIf="startDate || endDate">
+        <small class="text-muted">
+          <i class="bi bi-calendar3 me-1"></i>
+          <span *ngIf="startDate && endDate">{{ startDate }} to {{ endDate }}</span>
+          <span *ngIf="startDate && !endDate">From {{ startDate }}</span>
+          <span *ngIf="!startDate && endDate">Until {{ endDate }}</span>
+        </small>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="data-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Invoice ID</th>
+          <th>Date Issued</th>
+          <th>Clinic</th>
+          <th>Number of Orders</th>
+          <th>Amount (incl. VAT)</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of filteredInvoices">
+          <td class="monospace">{{ invoice.id }}</td>
+          <td>{{ formatDateToEuropean(invoice.dateIssued) }}</td>
+          <td>{{ invoice.clinic }}</td>
+          <td>{{ invoice.numberOfOrders }}</td>
+          <td>£{{ invoice.amount.toFixed(2) }}</td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-dark" title="View">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-dark" title="Download PDF">
+              <i class="bi bi-file-pdf"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

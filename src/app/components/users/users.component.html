@@ -1,0 +1,85 @@
+<div class="page-header">
+  <h1>Backoffice Users</h1>
+</div>
+
+<div class="control-bar">
+  <div class="row align-items-center">
+    <div class="col-md-3">
+      <input type="text" class="form-control" placeholder="Search users..." [(ngModel)]="searchTerm" (ngModelChange)="filterUsers()">
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" [(ngModel)]="organizationFilter" (ngModelChange)="filterUsers()">
+        <option value="">All Organizations</option>
+        <option *ngFor="let org of getUniqueOrganizations()" [value]="org">{{ org }}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" [(ngModel)]="roleFilter" (ngModelChange)="filterUsers()">
+        <option value="">All Roles</option>
+        <option *ngFor="let role of getUniqueRoles()" [value]="role">{{ role }}</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <select class="form-select" [(ngModel)]="statusFilter" (ngModelChange)="filterUsers()">
+        <option value="">All Status</option>
+        <option value="Active">Active</option>
+        <option value="Desactivated">Desactivated</option>
+      </select>
+    </div>
+    <div class="col-md-3 text-end">
+      <button class="btn btn-outline-dark me-2">
+        <i class="bi bi-download me-1"></i>Export
+      </button>
+      <button class="btn btn-dark">
+        <i class="bi bi-plus me-1"></i>Add New User
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="data-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Organization</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let user of filteredUsers">
+          <td>{{ user.organization }}</td>
+          <td>{{ user.firstName }}</td>
+          <td>{{ user.lastName }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.role }}</td>
+          <td>
+            <span class="badge" [class]="user.status === 'Active' ? 'bg-success' : 'bg-secondary'">
+              {{ user.status }}
+            </span>
+          </td>
+          <td class="action-buttons">
+            <button 
+              class="btn btn-sm" 
+              [class]="user.status === 'Active' ? 'btn-outline-warning' : 'btn-outline-success'"
+              [title]="user.status === 'Active' ? 'Deactivate' : 'Activate'"
+              (click)="toggleUserStatus(user)">
+              <i class="bi" [class]="user.status === 'Active' ? 'bi-person-x' : 'bi-person-check'"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-dark" title="Reset Password" (click)="resetPassword(user)">
+              <i class="bi bi-key"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-dark" title="View Profile" (click)="viewProfile(user)">
+              <i class="bi bi-eye"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

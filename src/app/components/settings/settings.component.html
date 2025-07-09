@@ -1,0 +1,109 @@
+<div class="page-header">
+  <h1>Settings</h1>
+</div>
+
+<div class="settings-layout">
+  <div class="settings-nav">
+    <nav class="nav flex-column">
+      <a class="nav-link" [class.active]="activeSection === 'roles'" (click)="activeSection = 'roles'">
+        <i class="bi bi-shield-check me-2"></i>Roles & Permissions
+      </a>
+    </nav>
+  </div>
+
+  <div class="settings-content">
+    <!-- Roles & Permissions -->
+    <div *ngIf="activeSection === 'roles'">
+      <h3>Manage Roles & Permissions</h3>
+      <p class="text-muted mb-4">Configure user roles and their associated permissions across different organizations.</p>
+      
+      <!-- Algeos Roles -->
+      <div class="role-group mb-5">
+        <h4 class="role-group-title">
+          <i class="bi bi-building me-2"></i>Algeos Roles
+        </h4>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card role-card">
+              <div class="card-body text-center">
+                <i class="bi bi-person-fill-gear" style="font-size: 2rem; color: var(--bs-gray-600);"></i>
+                <h5 class="card-title mt-2">Administrator</h5>
+                <p class="card-text">Full system access and user management across all organizations</p>
+                <button class="btn btn-outline-dark btn-sm" (click)="viewPermissions('Administrator')">View Permissions</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-6 mb-3">
+            <div class="card role-card">
+              <div class="card-body text-center">
+                <i class="bi bi-headset" style="font-size: 2rem; color: var(--bs-gray-600);"></i>
+                <h5 class="card-title mt-2">Support</h5>
+                <p class="card-text">Customer support and basic system operations</p>
+                <button class="btn btn-outline-dark btn-sm" (click)="viewPermissions('Support')">View Permissions</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Clinic Roles -->
+      <div class="role-group mb-5">
+        <h4 class="role-group-title">
+          <i class="bi bi-hospital me-2"></i>Clinic Roles
+        </h4>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="card role-card">
+              <div class="card-body text-center">
+                <i class="bi bi-person-fill-check" style="font-size: 2rem; color: var(--bs-gray-600);"></i>
+                <h5 class="card-title mt-2">Manager</h5>
+                <p class="card-text">Clinic management, order oversight and reporting access</p>
+                <button class="btn btn-outline-dark btn-sm" (click)="viewPermissions('Manager')">View Permissions</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card role-card">
+              <div class="card-body text-center">
+                <i class="bi bi-person-heart" style="font-size: 2rem; color: var(--bs-gray-600);"></i>
+                <h5 class="card-title mt-2">Clinician</h5>
+                <p class="card-text">Patient care, prescription creation and confection management</p>
+                <button class="btn btn-outline-dark btn-sm" (click)="viewPermissions('Clinician')">View Permissions</button>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="card role-card">
+              <div class="card-body text-center">
+                <i class="bi bi-person-workspace" style="font-size: 2rem; color: var(--bs-gray-600);"></i>
+                <h5 class="card-title mt-2">Secretary</h5>
+                <p class="card-text">Administrative support and patient data management</p>
+                <button class="btn btn-outline-dark btn-sm" (click)="viewPermissions('Secretary')">View Permissions</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Printing Portal Roles -->
+      <div class="role-group mb-4">
+        <h4 class="role-group-title">
+          <i class="bi bi-printer me-2"></i>Printing Portal Roles
+        </h4>
+        <div class="row">
+          <div class="col-md-6 mb-3">
+            <div class="card role-card">
+              <div class="card-body text-center">
+                <i class="bi bi-gear-fill" style="font-size: 2rem; color: var(--bs-gray-600);"></i>
+                <h5 class="card-title mt-2">Operator</h5>
+                <p class="card-text">Manufacturing operations and production management</p>
+                <button class="btn btn-outline-dark btn-sm" (click)="viewPermissions('Operator')">View Permissions</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

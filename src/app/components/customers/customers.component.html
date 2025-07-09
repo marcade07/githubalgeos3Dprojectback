@@ -1,0 +1,64 @@
+<div class="page-header">
+  <h1>Customers</h1>
+</div>
+
+<div class="control-bar">
+  <div class="row align-items-center">
+    <div class="col-md-6">
+      <input type="text" class="form-control" placeholder="Search by name, email, or organization..." [(ngModel)]="searchTerm" (ngModelChange)="filterCustomers()">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="roleFilter" (ngModelChange)="filterCustomers()">
+        <option value="">All Roles</option>
+        <option *ngFor="let role of getUniqueRoles()" [value]="role">{{ role }}</option>
+      </select>
+    </div>
+    <div class="col-md-3 text-end">
+      <button class="btn btn-outline-dark me-2">
+        <i class="bi bi-download me-1"></i>Export
+      </button>
+      <button class="btn btn-dark">
+        <i class="bi bi-plus me-1"></i>Add New Customer
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="data-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Organization</th>
+          <th>First Name</th>
+          <th>Last Name</th>
+          <th>Email</th>
+          <th>Role</th>
+          <th>Number of Confections</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let customer of filteredCustomers">
+          <td>{{ customer.organization }}</td>
+          <td>{{ customer.firstName }}</td>
+          <td>{{ customer.lastName }}</td>
+          <td>{{ customer.email }}</td>
+          <td>{{ customer.role }}</td>
+          <td>{{ customer.confections }}</td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-dark" title="View Customer" (click)="viewCustomer(customer)">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-dark" title="Edit Customer" (click)="editCustomer(customer)">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" title="Delete Customer" (click)="deleteCustomer(customer)">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

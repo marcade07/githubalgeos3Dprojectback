@@ -1,0 +1,31 @@
+// Data export component styles are handled in the global _components.scss file
+// This ensures consistent styling across the application
+// Export card button styling
+.export-card {
+  .btn {
+    width: 100%;
+    font-size: 0.875rem;
+    padding: 8px 12px;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    }
+    
+    i {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Responsive adjustments for export cards
+@media (max-width: 768px) {
+  .export-card {
+    .btn {
+      font-size: 0.8rem;
+      padding: 6px 10px;
+    }
+  }
+}

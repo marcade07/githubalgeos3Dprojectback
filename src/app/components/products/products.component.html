@@ -1,0 +1,353 @@
+<div class="page-header">
+  <h1>Products</h1>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tab-navigation">
+  <nav class="nav nav-tabs">
+    <button 
+      class="nav-link" 
+      [class.active]="activeTab === 'top-covers'"
+      (click)="setActiveTab('top-covers')">
+      Top Covers
+    </button>
+    <button 
+      class="nav-link" 
+      [class.active]="activeTab === 'insoles'"
+      (click)="setActiveTab('insoles')">
+      Insoles
+    </button>
+  </nav>
+</div>
+
+<!-- Top Covers Tab Content -->
+<div *ngIf="activeTab === 'top-covers'" class="tab-content">
+  <div class="control-bar">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Search top covers..." [(ngModel)]="topCoversSearchTerm" (ngModelChange)="filterTopCovers()">
+      </div>
+      <div class="col-md-5"></div>
+      <div class="col-md-3 text-end">
+        <button class="btn btn-dark">
+          <i class="bi bi-plus me-1"></i>Add New Top Cover
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-table">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name of Product</th>
+            <th>Code/Reference</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Price</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of filteredTopCovers">
+            <td>{{ product.name }}</td>
+            <td class="monospace">{{ product.code }}</td>
+            <td>{{ product.description }}</td>
+            <td>
+              <span class="badge" [class]="product.status === 'Active' ? 'bg-success' : 'bg-secondary'">
+                {{ product.status }}
+              </span>
+            </td>
+            <td>£{{ product.price.toFixed(2) }}</td>
+            <td class="action-buttons">
+              <button class="btn btn-sm btn-outline-dark" title="View" (click)="viewTopCover(product)">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-dark" title="Edit" (click)="editTopCover(product)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteTopCover(product)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Insoles Tab Content -->
+<div *ngIf="activeTab === 'insoles'" class="tab-content">
+  <div class="control-bar">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Search insoles..." [(ngModel)]="insolesSearchTerm" (ngModelChange)="filterInsoles()">
+      </div>
+      <div class="col-md-5"></div>
+      <div class="col-md-3 text-end">
+        <button class="btn btn-dark">
+          <i class="bi bi-plus me-1"></i>Add New Insole
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-table">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name of Product</th>
+            <th>Code/Reference</th>
+            <th>Description</th>
+            <th>Status</th>
+            <th>Price</th>
+            <th>Full Length</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let product of filteredInsoles">
+            <td>{{ product.name }}</td>
+            <td class="monospace">{{ product.code }}</td>
+            <td>{{ product.description }}</td>
+            <td>
+              <span class="badge" [class]="product.status === 'Active' ? 'bg-success' : 'bg-secondary'">
+                {{ product.status }}
+              </span>
+            </td>
+            <td>£{{ product.price.toFixed(2) }}</td>
+            <td>{{ getFullLengthOptionPrice(product) }}</td>
+            <td class="action-buttons">
+              <button class="btn btn-sm btn-outline-dark" title="View">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-dark" title="Edit" (click)="editInsole(product)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteInsole(product)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Top Cover Specification Modal -->
+<div class="modal-overlay" *ngIf="showTopCoverModal" (click)="closeTopCoverModal()">
+  <div class="top-cover-modal" (click)="$event.stopPropagation()" *ngIf="selectedTopCover">
+    <div class="modal-header">
+      <div class="product-info">
+        <h3><i class="bi bi-layers me-2"></i>{{ isTopCoverEditMode ? 'Edit' : 'View' }} Top Cover Specifications</h3>
+        <p class="product-name">{{ selectedTopCover.name }}</p>
+        <span class="badge product-code">{{ selectedTopCover.code }}</span>
+      </div>
+      <button class="btn-close" (click)="closeTopCoverModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Product Photo Section -->
+      <div class="product-photo-section">
+        <div class="product-image-container">
+          <div class="product-image-placeholder">
+            <i class="bi bi-image"></i>
+            <p>{{ selectedTopCover.name }}</p>
+            <small class="text-muted">Product Image</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Basic Information Section -->
+      <div class="specification-section">
+        <h4><i class="bi bi-info-circle me-2"></i>Basic Information</h4>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">Range:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.range }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Name:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.name }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Texture:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.texture }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Colour:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.colour }}</span>
+          </div>
+          <div class="spec-item full-width">
+            <span class="spec-label">Description:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.description }}</span>
+          </div>
+          <div class="spec-item" *ngIf="isTopCoverEditMode">
+            <span class="spec-label">Status:</span>
+            <select class="form-select spec-select" [(ngModel)]="selectedTopCover.status">
+              <option value="Active">Active</option>
+              <option value="Desactivated">Inactive</option>
+            </select>
+          </div>
+          <div class="spec-item" *ngIf="!isTopCoverEditMode">
+            <span class="spec-label">Status:</span>
+            <span class="spec-value">
+              <span class="badge" [class]="selectedTopCover.status === 'Active' ? 'bg-success' : 'bg-secondary'">
+                {{ selectedTopCover.status === 'Active' ? 'Active' : 'Inactive' }}
+              </span>
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Technical Specifications Section -->
+      <div class="specification-section">
+        <h4><i class="bi bi-gear me-2"></i>Technical Specifications</h4>
+        <div class="spec-grid">
+          <div class="spec-item">
+            <span class="spec-label">Material:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.material }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Base:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.base }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Thickness:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.thickness }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Density:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.density }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Breathability:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.breathability }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Shock Absorption:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.shockAbsorption }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Patient Comfort:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.patientComfort }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Touch:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.touch }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Sweat Absorption:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.sweatAbsorption }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Hypoallergenic:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.hypoallergenic }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Maintenance:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.maintenance }}</span>
+          </div>
+          <div class="spec-item">
+            <span class="spec-label">Size Range:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.sizeRange }}</span>
+          </div>
+          <div class="spec-item full-width">
+            <span class="spec-label">Recommended for:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.recommendedFor }}</span>
+          </div>
+          <div class="spec-item full-width">
+            <span class="spec-label">Brandsole Options:</span>
+            <span class="spec-value" [contentEditable]="isTopCoverEditMode" [class.editable]="isTopCoverEditMode">{{ selectedTopCover.technical.brandsoleOptions }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline-dark" *ngIf="!isTopCoverEditMode">
+        <i class="bi bi-download me-2"></i>Download Specifications
+      </button>
+      <button class="btn btn-outline-secondary" (click)="closeTopCoverModal()">
+        <i class="bi bi-x-circle me-2"></i>{{ isTopCoverEditMode ? 'Cancel' : 'Close' }}
+      </button>
+      <button class="btn btn-primary" *ngIf="isTopCoverEditMode" (click)="saveTopCoverChanges()">
+        <i class="bi bi-check-circle me-2"></i>Save Changes
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Insole Modal -->
+<div class="modal-overlay" *ngIf="showEditInsoleModal" (click)="closeEditInsoleModal()">
+  <div class="edit-insole-modal" (click)="$event.stopPropagation()" *ngIf="selectedInsole">
+    <div class="modal-header">
+      <div class="insole-info">
+        <h3><i class="bi bi-gear me-2"></i>Edit Insole</h3>
+        <p class="insole-name">{{ selectedInsole.name }}</p>
+        <span class="badge insole-code">{{ selectedInsole.code }}</span>
+      </div>
+      <button class="btn-close" (click)="closeEditInsoleModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Basic Product Information -->
+      <div class="product-section">
+        <h4><i class="bi bi-box me-2"></i>Product Information</h4>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Product Name</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedInsole.name">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Code/Reference</label>
+            <input type="text" class="form-control" [(ngModel)]="selectedInsole.code">
+          </div>
+          <div class="form-group full-width">
+            <label class="form-label">Description</label>
+            <textarea class="form-control" rows="3" [(ngModel)]="selectedInsole.description"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Base Price</label>
+            <div class="input-group">
+              <span class="input-group-text">£</span>
+              <input type="number" class="form-control" step="0.01" [(ngModel)]="selectedInsole.price">
+            </div>
+          </div>
+          <div class="form-group" *ngIf="shouldShowFullLengthOption()">
+            <label class="form-label">Full Length option price</label>
+            <div class="input-group">
+              <span class="input-group-text">£</span>
+              <input type="number" class="form-control" step="0.01" [(ngModel)]="fullLengthOption.price" min="0">
+            </div>
+            <small class="form-text text-muted">Option only available when designing a custom insole. Cannot be ordered alone.</small>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status</label>
+            <select class="form-select" [(ngModel)]="selectedInsole.status">
+              <option value="Active">Active</option>
+              <option value="Desactivated">Desactivated</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline-secondary" (click)="closeEditInsoleModal()">
+        <i class="bi bi-x-circle me-2"></i>Cancel
+      </button>
+      <button class="btn btn-primary" (click)="saveInsoleChanges()">
+        <i class="bi bi-check-circle me-2"></i>Save Changes
+      </button>
+    </div>
+  </div>
+</div>

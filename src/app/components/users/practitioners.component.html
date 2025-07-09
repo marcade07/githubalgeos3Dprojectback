@@ -1,0 +1,67 @@
+<div class="page-header">
+  <h1>Practitioners</h1>
+</div>
+
+<div class="control-bar">
+  <div class="row align-items-center">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Search practitioners..." [(ngModel)]="searchTerm" (ngModelChange)="filterPractitioners()">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="professionFilter" (ngModelChange)="filterPractitioners()">
+        <option value="">All Professions</option>
+        <option value="Podiatrist">Podiatrist</option>
+        <option value="Chiropodist">Chiropodist</option>
+        <option value="Orthotist">Orthotist</option>
+        <option value="Sports Medicine">Sports Medicine</option>
+      </select>
+    </div>
+    <div class="col-md-5 text-end">
+      <button class="btn btn-outline-dark">
+        <i class="bi bi-download me-1"></i>Export
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="data-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Clinic/Medical Center</th>
+          <th>Name</th>
+          <th>Surname</th>
+          <th>Email</th>
+          <th>Profession</th>
+          <th>Status</th>
+          <th>Number of Orders</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let practitioner of filteredPractitioners">
+          <td>{{ practitioner.clinic }}</td>
+          <td>{{ practitioner.name }}</td>
+          <td>{{ practitioner.surname }}</td>
+          <td>{{ practitioner.email }}</td>
+          <td>{{ practitioner.profession }}</td>
+          <td>
+            <span class="badge" [class]="practitioner.status === 'Active' ? 'bg-success' : 'bg-secondary'">
+              {{ practitioner.status }}
+            </span>
+          </td>
+          <td>{{ practitioner.orderCount }}</td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-dark" title="View Profile">
+              <i class="bi bi-eye"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-danger" title="Deactivate">
+              <i class="bi bi-person-x"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

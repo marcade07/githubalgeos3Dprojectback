@@ -1,0 +1,391 @@
+// Confections component styles - inherits from global styles and adds specific modal styles
+
+// Action buttons specific to confections table
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  
+  .btn {
+    margin-right: 0;
+    font-size: 0.75rem;
+    padding: 4px 8px;
+    white-space: nowrap;
+    
+    // Disabled button styling
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+      pointer-events: none;
+    }
+    
+    // Secondary button styling for disabled state
+    &.btn-outline-secondary:disabled {
+      background-color: #f8f9fa;
+      border-color: #dee2e6;
+      color: #6c757d;
+    }
+    
+    // Reorder button specific styling
+    &.btn-outline-success {
+      border-color: #198754;
+      color: #198754;
+      
+      &:hover {
+        background-color: #198754;
+        border-color: #198754;
+        color: white;
+      }
+    }
+  }
+}
+
+// Prescription Modal Styles - Identical to Patients page
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.prescription-modal {
+  background: white;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 900px;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px;
+  border-bottom: 1px solid #e9ecef;
+  
+  .prescription-info {
+    h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #000;
+      display: flex;
+      align-items: center;
+    }
+    
+    .confection-ref {
+      margin: 4px 0 8px 0;
+      color: #6c757d;
+      font-size: 0.875rem;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+    
+    .prescription-status {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+  }
+  
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: #f8f9fa;
+      color: #000;
+    }
+  }
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.prescription-section {
+  margin-bottom: 32px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  h4 {
+    margin: 0 0 16px 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #000;
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f8f9fa;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f9fa;
+    
+    &.full-width {
+      grid-column: 1 / -1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    
+    .label {
+      font-weight: 500;
+      color: #6c757d;
+      font-size: 0.875rem;
+    }
+    
+    .value {
+      font-weight: 600;
+      color: #000;
+      font-size: 0.875rem;
+      text-align: right;
+    }
+    
+    &.full-width .value {
+      text-align: left;
+      margin-top: 4px;
+    }
+  }
+}
+
+// Scans section
+.scans-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scan-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #6c757d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.scan-info {
+  flex: 1;
+}
+
+.scan-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  .scan-type {
+    font-weight: 600;
+    color: #000;
+    font-size: 0.875rem;
+  }
+  
+  .scan-date {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  .scan-foot {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+  }
+}
+
+.scan-actions {
+  display: flex;
+  gap: 4px;
+  
+  .btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+.no-scans {
+  text-align: center;
+  padding: 24px;
+  
+  i {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+  
+  p {
+    font-size: 0.875rem;
+  }
+}
+
+// Foot images section
+.foot-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.foot-image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.foot-image-placeholder {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #6c757d;
+    background: #e9ecef;
+  }
+  
+  i {
+    font-size: 3rem;
+    color: #6c757d;
+    margin-bottom: 12px;
+    display: block;
+  }
+  
+  p {
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    color: #000;
+    font-size: 0.875rem;
+  }
+  
+  small {
+    font-size: 0.75rem;
+  }
+}
+
+.foot-image-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  
+  .btn {
+    flex: 1;
+    font-size: 0.875rem;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid #e9ecef;
+  justify-content: flex-end;
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    
+    i {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Status badge colors
+.badge {
+  &.bg-secondary {
+    background-color: var(--bs-gray-500) !important;
+  }
+  
+  &.bg-warning {
+    background-color: var(--bs-warning) !important;
+    color: var(--bs-dark) !important;
+  }
+  
+  &.bg-primary {
+    background-color: var(--bs-primary) !important;
+  }
+  
+  &.bg-success {
+    background-color: var(--bs-success) !important;
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .action-buttons {
+    flex-direction: column;
+    gap: 2px;
+    
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+  
+  .prescription-modal {
+    width: 98%;
+    margin: 10px;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 16px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .foot-images-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

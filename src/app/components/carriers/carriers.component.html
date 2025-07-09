@@ -1,0 +1,213 @@
+<div class="page-header">
+  <h1>Carriers</h1>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tab-navigation">
+  <nav class="nav nav-tabs">
+    <button 
+      class="nav-link" 
+      [class.active]="activeTab === 'carriers'"
+      (click)="setActiveTab('carriers')">
+      Carriers
+    </button>
+    <button 
+      class="nav-link" 
+      [class.active]="activeTab === 'delivery-options'"
+      (click)="setActiveTab('delivery-options')">
+      Delivery Options
+    </button>
+  </nav>
+</div>
+
+<!-- Carriers Tab Content -->
+<div *ngIf="activeTab === 'carriers'" class="tab-content">
+  <div class="control-bar">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Search carriers..." [(ngModel)]="carriersSearchTerm" (ngModelChange)="filterCarriers()">
+      </div>
+      <div class="col-md-5"></div>
+      <div class="col-md-3 text-end">
+        <button class="btn btn-dark">
+          <i class="bi bi-plus me-1"></i>Add New Carrier
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-table">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Tracking URL</th>
+            <th>Number of delivery options</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let carrier of filteredCarriers">
+            <td>{{ carrier.name }}</td>
+            <td class="tracking-url">{{ carrier.trackingUrl }}</td>
+            <td>{{ carrier.deliveryOptionsCount }}</td>
+            <td class="action-buttons">
+              <button class="btn btn-sm btn-outline-dark" title="Edit" (click)="editCarrier(carrier)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteCarrier(carrier)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Delivery Options Tab Content -->
+<div *ngIf="activeTab === 'delivery-options'" class="tab-content">
+  <div class="control-bar">
+    <div class="row align-items-center">
+      <div class="col-md-4">
+        <input type="text" class="form-control" placeholder="Search delivery options..." [(ngModel)]="deliveryOptionsSearchTerm" (ngModelChange)="filterDeliveryOptions()">
+      </div>
+      <div class="col-md-3">
+        <select class="form-select" [(ngModel)]="carrierFilter" (ngModelChange)="filterDeliveryOptions()">
+          <option value="">All Carriers</option>
+          <option *ngFor="let carrierName of getUniqueCarrierNames()" [value]="carrierName">{{ carrierName }}</option>
+        </select>
+      </div>
+      <div class="col-md-2">
+        <select class="form-select" [(ngModel)]="statusFilter" (ngModelChange)="filterDeliveryOptions()">
+          <option value="">All Status</option>
+          <option value="Activated">Activated</option>
+          <option value="Deactivated">Deactivated</option>
+        </select>
+      </div>
+      <div class="col-md-3 text-end">
+        <button class="btn btn-dark" (click)="openAddDeliveryOptionModal()">
+          <i class="bi bi-plus me-1"></i>Add Delivery Option
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="data-table">
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Carrier</th>
+            <th>Delivery type name</th>
+            <th>Estimated delivery time</th>
+            <th>Price</th>
+            <th>Geographic zone</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let option of filteredDeliveryOptions">
+            <td>{{ getCarrierName(option.carrierId) }}</td>
+            <td>{{ option.deliveryTypeName }}</td>
+            <td>{{ option.estimatedDeliveryTime }}</td>
+            <td>
+              <span *ngIf="option.price !== null && option.price !== undefined">£{{ option.price.toFixed(2) }}</span>
+              <span *ngIf="option.price === null" class="text-muted">—</span>
+            </td>
+            <td>{{ option.geographicZone }}</td>
+            <td>
+              <span class="badge" [class]="option.status === 'Activated' ? 'bg-success' : 'bg-secondary'">
+                {{ option.status }}
+              </span>
+            </td>
+            <td class="action-buttons">
+              <button class="btn btn-sm btn-outline-dark" title="Edit" (click)="editDeliveryOption(option)">
+                <i class="bi bi-pencil"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteDeliveryOption(option)">
+                <i class="bi bi-trash"></i>
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- Add/Edit Delivery Option Modal -->
+<div class="modal-overlay" *ngIf="showDeliveryOptionModal" (click)="closeDeliveryOptionModal()">
+  <div class="delivery-option-modal" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <div class="modal-info">
+        <h3><i class="bi bi-truck me-2"></i>{{ isEditMode ? 'Edit' : 'Add' }} Delivery Option</h3>
+        <p *ngIf="isEditMode && selectedDeliveryOption" class="option-name">{{ selectedDeliveryOption.deliveryTypeName }}</p>
+      </div>
+      <button class="btn-close" (click)="closeDeliveryOptionModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="form-section">
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label">Carrier *</label>
+            <select class="form-select" [(ngModel)]="modalData.carrierId" required>
+              <option value="">Select a carrier</option>
+              <option *ngFor="let carrier of carriers" [value]="carrier.id">{{ carrier.name }}</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Delivery Type Name *</label>
+            <input type="text" class="form-control" [(ngModel)]="modalData.deliveryTypeName" placeholder="e.g., Next Day, Standard" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Estimated Delivery Time *</label>
+            <div class="d-flex align-items-center">
+              <input type="number" min="1" class="form-control" [(ngModel)]="modalData.estimatedDeliveryTime" placeholder="2" required>
+              <span class="ms-2">days</span>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Price *</label>
+            <div class="input-group">
+              <span class="input-group-text">£</span>
+              <input type="number" class="form-control" step="0.01" min="0" [(ngModel)]="modalData.price" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Geographic Zone *</label>
+            <select class="form-select" [(ngModel)]="modalData.geographicZone" required>
+              <option value="">Select zone</option>
+              <option value="UK Mainland">UK Mainland</option>
+              <option value="Northern Ireland">Northern Ireland</option>
+              <option value="Channel Islands">Channel Islands</option>
+              <option value="Ireland">Ireland</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Status *</label>
+            <select class="form-select" [(ngModel)]="modalData.status" required>
+              <option value="Activated">Activated</option>
+              <option value="Deactivated">Deactivated</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline-secondary" (click)="closeDeliveryOptionModal()">
+        <i class="bi bi-x-circle me-2"></i>Cancel
+      </button>
+      <button class="btn btn-primary" (click)="saveDeliveryOption()" [disabled]="!isFormValid()">
+        <i class="bi bi-check-circle me-2"></i>{{ isEditMode ? 'Update' : 'Add' }} Option
+      </button>
+    </div>
+  </div>
+</div>

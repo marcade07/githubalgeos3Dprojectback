@@ -1,0 +1,135 @@
+// Settings component styles with role group styling
+
+// Role group styling
+.role-group {
+  border: 1px solid var(--bs-gray-200);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-3);
+  background-color: var(--bs-gray-50);
+  
+  .role-group-title {
+    margin: 0 0 var(--spacing-3) 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary-black);
+    display: flex;
+    align-items: center;
+    padding-bottom: var(--spacing-2);
+    border-bottom: 2px solid var(--bs-gray-300);
+    
+    i {
+      color: var(--bs-gray-600);
+    }
+  }
+}
+
+// Role card styling
+.role-card {
+  transition: all 0.2s ease;
+  border: 1px solid var(--bs-gray-200);
+  height: 100%;
+  
+  &:hover {
+    border-color: var(--bs-gray-400);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transform: translateY(-2px);
+  }
+  
+  .card-body {
+    padding: var(--spacing-3);
+    
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-black);
+      margin-bottom: var(--spacing-2);
+    }
+    
+    .card-text {
+      font-size: 0.875rem;
+      color: var(--bs-gray-600);
+      margin-bottom: var(--spacing-3);
+      line-height: 1.4;
+      min-height: 2.8rem; // Ensure consistent height
+    }
+    
+    .btn {
+      font-size: 0.875rem;
+      padding: 6px 12px;
+      border-radius: 6px;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: var(--primary-black);
+        color: var(--primary-white);
+        border-color: var(--primary-black);
+      }
+    }
+  }
+}
+
+// Settings layout (inherited from global styles)
+.settings-layout {
+  display: grid;
+  grid-template-columns: 250px 1fr;
+  gap: var(--spacing-4);
+  
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.settings-nav {
+  background: var(--primary-white);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-2);
+  height: fit-content;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  
+  .nav-link {
+    color: var(--bs-gray-600);
+    padding: var(--spacing-2);
+    border-radius: var(--border-radius-base);
+    transition: var(--transition-base);
+    
+    &:hover {
+      background-color: var(--bs-gray-100);
+      color: var(--primary-black);
+    }
+    
+    &.active {
+      background-color: var(--primary-black);
+      color: var(--primary-white);
+    }
+  }
+}
+
+.settings-content {
+  background: var(--primary-white);
+  border-radius: var(--border-radius-base);
+  padding: var(--spacing-4);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+// Responsive design for role groups
+@media (max-width: 768px) {
+  .role-group {
+    padding: var(--spacing-2);
+    
+    .role-group-title {
+      font-size: 1.1rem;
+      margin-bottom: var(--spacing-2);
+    }
+  }
+  
+  .role-card {
+    .card-body {
+      padding: var(--spacing-2);
+      
+      .card-text {
+        min-height: auto;
+        margin-bottom: var(--spacing-2);
+      }
+    }
+  }
+}

@@ -1,0 +1,260 @@
+<div class="page-header">
+  <h1>Confections</h1>
+</div>
+
+<div class="control-bar">
+  <div class="row align-items-center">
+    <div class="col-md-4">
+      <input type="text" class="form-control" placeholder="Search by Confection ID or Patient Name..." [(ngModel)]="searchTerm" (ngModelChange)="filterConfections()">
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="organizationFilter" (ngModelChange)="filterConfections()">
+        <option value="">All Organizations</option>
+        <option *ngFor="let org of getUniqueOrganizations()" [value]="org">{{ org }}</option>
+      </select>
+    </div>
+    <div class="col-md-3">
+      <select class="form-select" [(ngModel)]="statusFilter" (ngModelChange)="filterConfections()">
+        <option value="">All Status</option>
+        <option value="Draft">Draft</option>
+        <option value="In Cart">In Cart</option>
+        <option value="Ordered">Ordered</option>
+        <option value="Received">Received</option>
+      </select>
+    </div>
+    <div class="col-md-2 text-end">
+      <button class="btn btn-outline-dark" (click)="clearFilters()">
+        <i class="bi bi-x-circle me-1"></i>Clear
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="data-table">
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Confection ID</th>
+          <th>Patient</th>
+          <th>Clinic/Organization</th>
+          <th>Made by</th>
+          <th>Date Created</th>
+          <th>Status</th>
+          <th>Order Number</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let confection of filteredConfections">
+          <td class="monospace">{{ confection.confectionId }}</td>
+          <td>{{ confection.patientFirstName }} {{ confection.patientLastName }}</td>
+          <td>{{ confection.organization }}</td>
+          <td>{{ confection.madeBy }}</td>
+          <td>{{ formatDateToEuropean(confection.dateCreated) }}</td>
+          <td>
+            <span class="badge" [class]="getStatusBadgeClass(confection.status)">
+              {{ confection.status }}
+            </span>
+          </td>
+          <td class="monospace">{{ confection.orderNumber }}</td>
+          <td class="action-buttons">
+            <button class="btn btn-sm btn-outline-primary" title="View Prescription" (click)="viewPrescription(confection)">
+              <i class="bi bi-file-medical me-1"></i>View Prescription
+            </button>
+            <button 
+              class="btn btn-sm" 
+              [class]="isEditInsoleEnabled(confection.status) ? 'btn-outline-dark' : 'btn-outline-secondary'"
+              [disabled]="!isEditInsoleEnabled(confection.status)"
+              title="Edit Insole" 
+              (click)="editInsole(confection)">
+              <i class="bi bi-gear me-1"></i>Edit Insole
+            </button>
+            <button class="btn btn-sm btn-outline-danger" title="Delete" (click)="deleteConfection(confection)">
+              <i class="bi bi-trash"></i>
+            </button>
+            <button class="btn btn-sm btn-outline-success" title="Reorder" (click)="reorderConfection(confection)">
+              <i class="bi bi-arrow-repeat me-1"></i>Reorder
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Prescription Modal - Identical to Patients page -->
+<div class="modal-overlay" *ngIf="showPrescriptionModal" (click)="closePrescriptionModal()">
+  <div class="prescription-modal" (click)="$event.stopPropagation()" *ngIf="selectedConfection">
+    <div class="modal-header">
+      <div class="prescription-info">
+        <h3><i class="bi bi-file-medical me-2"></i>Prescription Details</h3>
+        <p class="confection-ref">{{ selectedConfection.confectionId }}</p>
+        <span class="badge prescription-status" [class]="getStatusBadgeClass(selectedConfection.status)">
+          {{ selectedConfection.status }}
+        </span>
+      </div>
+      <button class="btn-close" (click)="closePrescriptionModal()">
+        <i class="bi bi-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <!-- Personal Information Section -->
+      <div class="prescription-section">
+        <h4><i class="bi bi-person-circle me-2"></i>Personal Information</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">First Name:</span>
+            <span class="value">{{ mockPrescriptionData.personalInfo.firstName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Last Name:</span>
+            <span class="value">{{ mockPrescriptionData.personalInfo.lastName }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Date of Birth:</span>
+            <span class="value">{{ formatDateToEuropean(mockPrescriptionData.personalInfo.dateOfBirth) }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Medical Information Section -->
+      <div class="prescription-section">
+        <h4><i class="bi bi-heart-pulse me-2"></i>Medical Information</h4>
+        <div class="info-grid">
+          <div class="info-item">
+            <span class="label">Height:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.height }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Weight:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.weight }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Shoe Size (UK):</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.shoeSizeUK }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Shoe Size (EU):</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.shoeSizeEU }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Type of Shoes:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.typeOfShoes }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Foot Width:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.footWidth }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Foot Type:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.footType }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Arch Type:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.archType }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">Foot Range:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.footRange }}</span>
+          </div>
+          <div class="info-item">
+            <span class="label">STJ Axis Location:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.stjAxisLocation }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="label">Symptoms/Diagnosis:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.symptomsOrDiagnosis }}</span>
+          </div>
+          <div class="info-item full-width">
+            <span class="label">Comments:</span>
+            <span class="value">{{ mockPrescriptionData.medicalInfo.comments }}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Associated Scans Section -->
+      <div class="prescription-section">
+        <h4><i class="bi bi-camera me-2"></i>Associated Scans</h4>
+        <div class="scans-list" *ngIf="mockPrescriptionData.associatedScans.length > 0; else noScans">
+          <div class="scan-item" *ngFor="let scan of mockPrescriptionData.associatedScans">
+            <div class="scan-info">
+              <div class="scan-main">
+                <span class="scan-type">{{ scan.scanType }}</span>
+                <span class="scan-date">{{ formatDateToEuropean(scan.date) }}</span>
+                <span class="badge scan-foot" [class]="scan.foot === 'Left' ? 'bg-info' : 'bg-warning'">
+                  {{ scan.foot }} Foot
+                </span>
+              </div>
+            </div>
+            <div class="scan-actions">
+              <button class="btn btn-sm btn-outline-dark" title="View Scan">
+                <i class="bi bi-eye"></i>
+              </button>
+              <button class="btn btn-sm btn-outline-dark" title="Download Scan">
+                <i class="bi bi-download"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+        
+        <ng-template #noScans>
+          <div class="no-scans">
+            <i class="bi bi-camera-slash text-muted"></i>
+            <p class="text-muted mb-0">No scans associated with this prescription.</p>
+          </div>
+        </ng-template>
+      </div>
+
+      <!-- Foot Scan Images Section -->
+      <div class="prescription-section">
+        <h4><i class="bi bi-images me-2"></i>Foot Scan Images</h4>
+        <div class="foot-images-grid">
+          <div class="foot-image-container">
+            <div class="foot-image-placeholder">
+              <i class="bi bi-image"></i>
+              <p>Left Foot Scan</p>
+              <small class="text-muted">Image placeholder</small>
+            </div>
+            <div class="foot-image-actions">
+              <button class="btn btn-sm btn-outline-dark">
+                <i class="bi bi-eye me-1"></i>View
+              </button>
+              <button class="btn btn-sm btn-outline-dark">
+                <i class="bi bi-download me-1"></i>Download
+              </button>
+            </div>
+          </div>
+          <div class="foot-image-container">
+            <div class="foot-image-placeholder">
+              <i class="bi bi-image"></i>
+              <p>Right Foot Scan</p>
+              <small class="text-muted">Image placeholder</small>
+            </div>
+            <div class="foot-image-actions">
+              <button class="btn btn-sm btn-outline-dark">
+                <i class="bi bi-eye me-1"></i>View
+              </button>
+              <button class="btn btn-sm btn-outline-dark">
+                <i class="bi bi-download me-1"></i>Download
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-outline-dark" (click)="downloadPrescription()">
+        <i class="bi bi-download me-2"></i>Download Prescription
+      </button>
+      <button class="btn btn-outline-primary" (click)="editPrescriptionFromModal()">
+        <i class="bi bi-pencil me-2"></i>Edit Prescription
+      </button>
+      <button class="btn btn-secondary" (click)="closePrescriptionModal()">
+        <i class="bi bi-x-circle me-2"></i>Close
+      </button>
+    </div>
+  </div>
+</div>

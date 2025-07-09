@@ -1,0 +1,581 @@
+// Patient row expansion styles
+.patient-row {
+  transition: all 0.3s ease;
+  
+  &.cursor-pointer:hover {
+    background-color: var(--bs-gray-200) !important;
+  }
+  
+  &.expanded {
+    background-color: var(--bs-gray-100) !important;
+    border-bottom: 2px solid var(--primary-black);
+  }
+}
+
+// Confections expanded row
+.confections-row {
+  background-color: var(--bs-gray-50) !important;
+  
+  &:hover {
+    background-color: var(--bs-gray-50) !important;
+  }
+}
+
+.confections-container {
+  padding: var(--spacing-3) !important;
+  border: none !important;
+}
+
+.confections-header {
+  margin-bottom: var(--spacing-2);
+  padding-bottom: var(--spacing-1);
+  border-bottom: 1px solid var(--bs-gray-300);
+  
+  h6 {
+    margin: 0;
+    color: var(--primary-black);
+    font-weight: 600;
+    font-size: 0.875rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
+.confections-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-2);
+}
+
+.confection-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--spacing-2);
+  background: var(--primary-white);
+  border: 1px solid var(--bs-gray-200);
+  border-radius: var(--border-radius-base);
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: var(--bs-gray-400);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.confection-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.confection-main {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-2);
+  
+  .confection-id {
+    font-weight: 600;
+    color: var(--primary-black);
+    font-size: 0.875rem;
+  }
+  
+  .confection-date {
+    color: var(--bs-gray-600);
+    font-size: 0.875rem;
+  }
+  
+  .confection-status {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+  }
+}
+
+.confection-details {
+  .made-by {
+    color: var(--bs-gray-600);
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+  }
+}
+
+// Prescription text buttons
+.prescription-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-right: var(--spacing-2);
+  
+  .prescription-btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    color: var(--bs-primary);
+    text-decoration: none;
+    border: none;
+    background: none;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      color: var(--bs-primary);
+      text-decoration: underline;
+      background: rgba(13, 110, 253, 0.1);
+      border-radius: 4px;
+    }
+    
+    &:focus {
+      box-shadow: 0 0 0 2px rgba(13, 110, 253, 0.25);
+      outline: none;
+    }
+  }
+}
+
+// Confection action icons
+.confection-actions {
+  display: flex;
+  gap: 4px;
+  
+  .btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+.no-confections {
+  text-align: center;
+  padding: var(--spacing-4);
+  
+  i {
+    font-size: 2rem;
+    margin-bottom: var(--spacing-2);
+    display: block;
+  }
+  
+  p {
+    font-size: 0.875rem;
+  }
+}
+
+// Action buttons container
+.action-buttons {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  
+  .btn {
+    margin-right: 0; // Remove default margin since we're using gap
+  }
+}
+
+// Chevron button styles - positioned after delete button
+.chevron-btn {
+  min-width: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+  margin-left: 4px; // Small gap after delete button
+  
+  .chevron-icon {
+    transition: transform 0.3s ease;
+    font-size: 0.875rem;
+  }
+  
+  &:hover {
+    background-color: var(--bs-gray-200);
+    border-color: var(--bs-gray-400);
+  }
+}
+
+// Visual feedback for expanded state
+.patient-row.expanded {
+  .chevron-btn {
+    background-color: var(--bs-gray-200);
+    border-color: var(--bs-gray-400);
+    
+    .chevron-icon {
+      color: var(--primary-black);
+      font-weight: 600;
+    }
+  }
+}
+
+// Status badge colors
+.confection-status {
+  &.bg-secondary {
+    background-color: var(--bs-gray-500) !important;
+  }
+  
+  &.bg-warning {
+    background-color: var(--bs-warning) !important;
+    color: var(--bs-dark) !important;
+  }
+  
+  &.bg-primary {
+    background-color: var(--bs-primary) !important;
+  }
+  
+  &.bg-success {
+    background-color: var(--bs-success) !important;
+  }
+}
+
+// Prescription Modal Styles
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+.prescription-modal {
+  background: white;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 900px;
+  max-height: 95vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 24px;
+  border-bottom: 1px solid #e9ecef;
+  
+  .prescription-info {
+    h3 {
+      margin: 0;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: #000;
+      display: flex;
+      align-items: center;
+    }
+    
+    .confection-ref {
+      margin: 4px 0 8px 0;
+      color: #6c757d;
+      font-size: 0.875rem;
+      font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+    }
+    
+    .prescription-status {
+      font-size: 0.75rem;
+      padding: 4px 8px;
+    }
+  }
+  
+  .btn-close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #6c757d;
+    cursor: pointer;
+    padding: 0;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+    
+    &:hover {
+      background-color: #f8f9fa;
+      color: #000;
+    }
+  }
+}
+
+.modal-body {
+  padding: 24px;
+}
+
+.prescription-section {
+  margin-bottom: 32px;
+  
+  &:last-child {
+    margin-bottom: 0;
+  }
+  
+  h4 {
+    margin: 0 0 16px 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #000;
+    display: flex;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #f8f9fa;
+  }
+}
+
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 12px;
+  
+  .info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #f8f9fa;
+    
+    &.full-width {
+      grid-column: 1 / -1;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 4px;
+    }
+    
+    .label {
+      font-weight: 500;
+      color: #6c757d;
+      font-size: 0.875rem;
+    }
+    
+    .value {
+      font-weight: 600;
+      color: #000;
+      font-size: 0.875rem;
+      text-align: right;
+    }
+    
+    &.full-width .value {
+      text-align: left;
+      margin-top: 4px;
+    }
+  }
+}
+
+// Scans section
+.scans-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.scan-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  background: #f8f9fa;
+  border: 1px solid #e9ecef;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #6c757d;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.scan-info {
+  flex: 1;
+}
+
+.scan-main {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  
+  .scan-type {
+    font-weight: 600;
+    color: #000;
+    font-size: 0.875rem;
+  }
+  
+  .scan-date {
+    color: #6c757d;
+    font-size: 0.875rem;
+  }
+  
+  .scan-foot {
+    font-size: 0.75rem;
+    padding: 2px 8px;
+  }
+}
+
+.scan-actions {
+  display: flex;
+  gap: 4px;
+  
+  .btn {
+    padding: 4px 8px;
+    font-size: 0.75rem;
+  }
+}
+
+.no-scans {
+  text-align: center;
+  padding: 24px;
+  
+  i {
+    font-size: 2rem;
+    margin-bottom: 12px;
+    display: block;
+  }
+  
+  p {
+    font-size: 0.875rem;
+  }
+}
+
+// Foot images section
+.foot-images-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.foot-image-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.foot-image-placeholder {
+  background: #f8f9fa;
+  border: 2px dashed #dee2e6;
+  border-radius: 8px;
+  padding: 40px 20px;
+  text-align: center;
+  transition: all 0.2s ease;
+  
+  &:hover {
+    border-color: #6c757d;
+    background: #e9ecef;
+  }
+  
+  i {
+    font-size: 3rem;
+    color: #6c757d;
+    margin-bottom: 12px;
+    display: block;
+  }
+  
+  p {
+    margin: 0 0 4px 0;
+    font-weight: 600;
+    color: #000;
+    font-size: 0.875rem;
+  }
+  
+  small {
+    font-size: 0.75rem;
+  }
+}
+
+.foot-image-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  
+  .btn {
+    flex: 1;
+    font-size: 0.875rem;
+  }
+}
+
+.modal-footer {
+  display: flex;
+  gap: 12px;
+  padding: 24px;
+  border-top: 1px solid #e9ecef;
+  justify-content: flex-end;
+  
+  .btn {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    
+    i {
+      font-size: 0.875rem;
+    }
+  }
+}
+
+// Responsive design
+@media (max-width: 768px) {
+  .confection-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--spacing-2);
+  }
+  
+  .confection-main {
+    flex-wrap: wrap;
+  }
+  
+  .prescription-actions {
+    flex-direction: row;
+    align-self: stretch;
+    justify-content: flex-start;
+    margin-right: 0;
+    margin-bottom: var(--spacing-1);
+  }
+  
+  .confection-actions {
+    align-self: stretch;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  
+  .action-buttons {
+    flex-wrap: wrap;
+    gap: 2px;
+    
+    .btn {
+      padding: 2px 6px;
+      font-size: 0.75rem;
+    }
+    
+    .chevron-btn {
+      min-width: 28px;
+      margin-left: 2px;
+    }
+  }
+  
+  .prescription-modal {
+    width: 98%;
+    margin: 10px;
+  }
+  
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding: 16px;
+  }
+  
+  .info-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .foot-images-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .modal-footer {
+    flex-direction: column;
+    
+    .btn {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

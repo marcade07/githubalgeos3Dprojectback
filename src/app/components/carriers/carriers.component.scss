@@ -1,0 +1,247 @@
+// Carriers component styles with tab navigation
+
+// Tab navigation styles (reused from Products component)
+.tab-navigation {
+  margin-bottom: var(--spacing-3);
+  
+  .nav-tabs {
+    border-bottom: 2px solid var(--bs-gray-200);
+    background: var(--primary-white);
+    border-radius: var(--border-radius-base) var(--border-radius-base) 0 0;
+    padding: 0 var(--spacing-2);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    
+    .nav-link {
+      background: none;
+      border: none;
+      color: var(--bs-gray-600);
+      padding: var(--spacing-2) var(--spacing-3);
+      font-weight: 500;
+      font-size: 0.875rem;
+      cursor: pointer;
+      transition: var(--transition-base);
+      border-radius: var(--border-radius-base) var(--border-radius-base) 0 0;
+      margin-bottom: -2px;
+      position: relative;
+      
+      &:hover:not(.active) {
+        color: var(--primary-black);
+        background-color: var(--bs-gray-100);
+      }
+      
+      &.active {
+        color: var(--primary-black);
+        background-color: var(--primary-white);
+        font-weight: 600;
+        border-bottom: 2px solid var(--primary-black);
+        
+        &::after {
+          content: '';
+          position: absolute;
+          bottom: -2px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background-color: var(--primary-black);
+        }
+      }
+    }
+  }
+}
+
+// Tab content styles
+.tab-content {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Tracking URL styling
+.tracking-url {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+  font-size: 0.8rem;
+  color: var(--bs-gray-600);
+  max-width: 300px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Delivery Option Modal styles
+.delivery-option-modal {
+  background: white;
+  border-radius: 12px;
+  width: 95%;
+  max-width: 700px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 24px;
+    border-bottom: 1px solid #e9ecef;
+    
+    .modal-info {
+      h3 {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: #000;
+        display: flex;
+        align-items: center;
+      }
+      
+      .option-name {
+        margin: 4px 0 0 0;
+        color: #6c757d;
+        font-size: 0.875rem;
+      }
+    }
+    
+    .btn-close {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      color: #6c757d;
+      cursor: pointer;
+      padding: 0;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s ease;
+      
+      &:hover {
+        background-color: #f8f9fa;
+        color: #000;
+      }
+    }
+  }
+  
+  .modal-body {
+    padding: 24px;
+    
+    .form-section {
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: var(--spacing-3);
+        
+        @media (max-width: 768px) {
+          grid-template-columns: 1fr;
+        }
+        
+        .form-group {
+          .form-label {
+            font-weight: 500;
+            color: #000;
+            margin-bottom: 8px;
+            display: block;
+            font-size: 0.875rem;
+            
+            &::after {
+              content: ' *';
+              color: #dc3545;
+            }
+          }
+          
+          .form-control, .form-select {
+            border-radius: 6px;
+            border: 1px solid #dee2e6;
+            transition: all 0.2s ease;
+            font-size: 0.875rem;
+            
+            &:focus {
+              border-color: #000;
+              box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+            }
+            
+            &:invalid {
+              border-color: #dc3545;
+            }
+          }
+          
+          .input-group {
+            .input-group-text {
+              background-color: #e9ecef;
+              border-color: #dee2e6;
+              font-weight: 500;
+              font-size: 0.875rem;
+            }
+          }
+        }
+      }
+    }
+  }
+  
+  .modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 24px;
+    border-top: 1px solid #e9ecef;
+    justify-content: flex-end;
+    
+    .btn {
+      padding: 8px 16px;
+      font-size: 0.875rem;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      
+      i {
+        font-size: 0.875rem;
+      }
+      
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// Modal overlay
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1050;
+}
+
+// Responsive design for tabs
+@media (max-width: 768px) {
+  .tab-navigation {
+    .nav-tabs {
+      padding: 0 var(--spacing-1);
+      
+      .nav-link {
+        padding: var(--spacing-1) var(--spacing-2);
+        font-size: 0.8rem;
+      }
+    }
+  }
+  
+  .tracking-url {
+    max-width: 200px;
+  }
+}
